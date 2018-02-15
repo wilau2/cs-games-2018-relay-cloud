@@ -1,0 +1,32 @@
+spring.application.name: communication
+server.port: 8100
+
+management.security.sessions: never
+
+logging.level.org.springframework.web: debug
+logging.level.org.springframework.security: debug
+
+spring.redis.port: 6379
+
+spring.sleuth.sampler.percentage: 1.0
+spring.sleuth.web.skipPattern: (^cleanup.*)
+
+---
+spring:
+  profiles: native
+
+eureka:
+  client:
+    service-url.defaultZone: http://discUser:discPassword@localhost:8082/eureka
+
+spring.redis.host: localhost
+
+---
+spring:
+  profiles: docker
+
+eureka:
+  client:
+    service-url.defaultZone: http://discUser:discPassword@service-discovery:8082/eureka
+
+spring.redis.host: redis

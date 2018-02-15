@@ -1,0 +1,34 @@
+spring:
+  application.name: eureka-server
+
+server:
+  port: ${PORT:8082}
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    region: default
+    registryFetchIntervalSeconds: 5
+
+spring.redis.port: 6379
+
+---
+spring:
+  profiles: native
+
+eureka:
+  client:
+    service-url.defaultZone: http://discUser:discPassword@localhost:8082/eureka
+
+spring.redis.host: localhost
+
+---
+spring:
+  profiles: docker
+
+eureka:
+  client:
+    service-url.defaultZone: http://discUser:discPassword@service-discovery:8082/eureka
+
+spring.redis.host: redis

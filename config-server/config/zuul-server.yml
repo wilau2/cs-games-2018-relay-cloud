@@ -1,0 +1,79 @@
+spring:
+  application.name: zuul-server
+
+server:
+  port: ${PORT:9090}
+
+eureka.client.region: default
+eureka.client.registryFetchIntervalSeconds: 5
+
+management.security.sessions: always
+
+hystrix.command.authentication.execution.isolation.thread.timeoutInMilliseconds: 600000
+hystrix.command.authorization.execution.isolation.thread.timeoutInMilliseconds: 600000
+hystrix.command.communication.execution.isolation.thread.timeoutInMilliseconds: 600000
+hystrix.command.eureka-server.execution.isolation.thread.timeoutInMilliseconds: 600000
+
+endpoints.routes.sensitive: false
+
+logging.level.org.springframework.web: debug
+logging.level.org.springframework.security: debug
+logging.level.org.springframework.cloud.netflix.zuul: debug
+
+spring.redis.port: 6379
+
+spring.sleuth.sampler.percentage: 1.0
+spring.sleuth.web.skipPattern: (^cleanup.*|.+favicon.*)
+
+---
+spring:
+  profiles: native
+
+eureka:
+  client:
+    service-url.defaultZone: http://discUser:discPassword@localhost:8082/eureka
+
+spring.redis.host: localhost
+
+zuul:
+  prefix: /api
+  routes:
+    authorization:
+      path: /authorization/**
+      sensitive-headers: Set-Cookie,Authorization
+      url: http://localhost:8090
+    communication:
+      path: /communication/**
+      sensitive-headers: Set-Cookie,Authorization
+      url: http://localhost:8100
+    eureka-server:
+      path: /eureka-server/**
+      sensitive-headers: Set-Cookie,Authorization
+      url: http://localhost:8082
+
+---
+spring:
+  profiles: docker
+
+eureka:
+  client:
+    service-url.defaultZone: http://discUser:discPassword@service-discovery:8082/eureka
+
+spring.redis.host: redis
+
+zuul:
+  prefix: /api
+  routes:
+    authorization:
+      path: /authorization/**
+      sensitive-headers: Set-Cookie,Authorization
+      url: http://authorization:8090
+    communication:
+      path: /communication/**
+      sensitive-headers: Set-Cookie,Authorization
+      url: http://communication:8100
+    eureka-server:
+      path: /eureka-server/**
+      sensitive-headers: Set-Cookie,Authorization
+      url: http://service-discovery:8082
+
