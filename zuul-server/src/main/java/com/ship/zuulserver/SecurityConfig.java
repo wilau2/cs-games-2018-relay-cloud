@@ -14,9 +14,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-            .withUser("user").password("password").roles("USER")
+            .withUser("admiral").password("admiral").roles("ADMIRAL")
             .and()
-            .withUser("admin").password("admin").roles("ADMIN");
+            .withUser("viceAdmiral").password("viceAdmiral").roles("VICE_ADMIRAL")
+            .and()
+            .withUser("captain").password("captain").roles("CAPTAIN")
+            .and()
+            .withUser("commander").password("commander").roles("COMMANDER")
+            .and()
+            .withUser("lieutenant").password("lieutenant").roles("LIEUTENANT")
+            .and()
+            .withUser("ensign").password("ensign").roles("ENSIGN")
+            .and()
+            .withUser("crewman").password("crewman").roles("CREWMAN");
     }
 
     @Override
@@ -25,7 +35,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
             .headers().disable()
             .authorizeRequests()
-            .antMatchers("/api/eureka-server/**").hasRole("ADMIN")
             .anyRequest().authenticated()
             .and().httpBasic();
     }
