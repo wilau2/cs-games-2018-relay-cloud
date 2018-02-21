@@ -19,30 +19,132 @@ docker pull redis:4.0.8-alpine
 docker run --name redis -p 6379:6379 redis:4.0.8-alpine
 ```
 ### config-server
+update your local path: in `config-server/src/main/resources`
+
+`cloud.config.server.native.search-locations: file:///${user.home}/{pathToGitRepo}/cs-games-2018-relay-cloud/config-server/config`
 ```
-gradle :config-server:bootRun
+./gradlew :config-server:bootRun -Dspring.profiles.active=native
 ```
-to test it worked
+to test it worked:  
 `GET` url: `http://configUser:configPassword@localhost:8888/config/eureka-server.yml`
+should output:
+```
+eureka:
+     client:
+       fetchRegistry: false
+       region: default
+       registerWithEureka: false
+       registryFetchIntervalSeconds: 5
+   server:
+     port: 8082
+   spring:
+     application:
+       name: eureka-server
+     redis:
+       port: 6379
+```
+
 
 ### eureka-server
 ```
-gradle :eureka-server:bootRun -Dspring.profiles.active=native
+./gradlew :eureka-server:bootRun -Dspring.profiles.active=native
 ```
-to test it worked
+to test it worked:
 `GET` url: `http://discUser:discPassword@localhost:8082/eureka/apps`
+
+should output something like this:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<applications>
+   <versions__delta>1</versions__delta>
+   <apps__hashcode>UP_1_</apps__hashcode>
+   <application>
+      <name>CONFIG-SERVER</name>
+      <instance>
+         <instanceId>192.168.0.102:config-server:8888</instanceId>
+         <hostName>192.168.0.102</hostName>
+         <app>CONFIG-SERVER</app>
+         <ipAddr>192.168.0.102</ipAddr>
+         <status>UP</status>
+         <overriddenstatus>UNKNOWN</overriddenstatus>
+         <port enabled="true">8888</port>
+         <securePort enabled="false">443</securePort>
+         <countryId>1</countryId>
+         <dataCenterInfo class="com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo">
+            <name>MyOwn</name>
+         </dataCenterInfo>
+         <leaseInfo>
+            <renewalIntervalInSecs>30</renewalIntervalInSecs>
+            <durationInSecs>90</durationInSecs>
+            <registrationTimestamp>1519177038956</registrationTimestamp>
+            <lastRenewalTimestamp>1519177038956</lastRenewalTimestamp>
+            <evictionTimestamp>0</evictionTimestamp>
+            <serviceUpTimestamp>1519177038323</serviceUpTimestamp>
+         </leaseInfo>
+         <metadata>
+            <management.port>8888</management.port>
+         </metadata>
+         <homePageUrl>http://192.168.0.102:8888/</homePageUrl>
+         <statusPageUrl>http://192.168.0.102:8888/info</statusPageUrl>
+         <healthCheckUrl>http://192.168.0.102:8888/health</healthCheckUrl>
+         <vipAddress>config-server</vipAddress>
+         <secureVipAddress>config-server</secureVipAddress>
+         <isCoordinatingDiscoveryServer>false</isCoordinatingDiscoveryServer>
+         <lastUpdatedTimestamp>1519177038956</lastUpdatedTimestamp>
+         <lastDirtyTimestamp>1519176647999</lastDirtyTimestamp>
+         <actionType>ADDED</actionType>
+      </instance>
+   </application>
+</applications>
+```
+
 ### zuul-server
 ```
- gradle :zuul-server:bootRun -Dspring.profiles.active=native
+./gradlew :zuul-server:bootRun -Dspring.profiles.active=native
 ```
+if it work, services like authorization and communication will be available on port 9090
 ### authorization
 ```
- gradle :authorization:bootRun -Dspring.profiles.active=native
+./gradlew :authorization:bootRun -Dspring.profiles.active=native
 ```
 ### communication
 ```
- gradle :communication:bootRun -Dspring.profiles.active=native
+./gradlew :communication:bootRun -Dspring.profiles.active=native
 ```
+if authorization and communication works, you should be able to sendMessage and get message list
+
+#### sendMessage
+
+`POST` url `http://localhost:9090/api/communication/sendMessage`
+
+requestBody JSON
+```
+{
+	"title": "title",
+	"content": "this is a content",
+	"recipient": "admiral",
+	"sender": "admiral"
+}
+```
+
+#### getMessages
+
+`GET` url `http://localhost:9090/api/communication/messages`
+response body
+```
+{
+	"_embedded": {
+		"messageList": [
+			{
+				"id": 1,
+				"title": "title",
+				"content": "this is a content",
+				"recipient": "admiral",
+				"sender": "admiral"
+			},
+			...
+```
+
 ## Additional information
 ### Service discovery (eureka)
 This simplifies communication between services.
@@ -63,5 +165,4 @@ Centralize configuration for all micro services.
 ## References
  - [Spring cloud bootstrap](https://github.com/eugenp/tutorials/tree/master/spring-cloud/spring-cloud-bootstrap)
  - [Securing cloud services](http://www.baeldung.com/spring-cloud-securing-services)
- - [Dockerizing a spring boot app](http://www.baeldung.com/dockerizing-spring-boot-application)
 
