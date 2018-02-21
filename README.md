@@ -114,7 +114,7 @@ if it work, services like authorization and communication will be available on p
 if authorization and communication works, you should be able to sendMessage and get message list
 
 #### sendMessage
-
+basic auth admiral//admiral
 `POST` url `http://localhost:9090/api/communication/sendMessage`
 
 requestBody JSON
@@ -128,7 +128,7 @@ requestBody JSON
 ```
 
 #### getMessages
-
+basic auth admiral//admiral
 `GET` url `http://localhost:9090/api/communication/messages`
 response body
 ```
@@ -144,6 +144,19 @@ response body
 			},
 			...
 ```
+
+#### forbidden exception
+basic auth crewman//crewman
+```
+{
+	"title": "title",
+	"content": "this is a content",
+	"recipient": "admiral",
+	"sender": "crewman"
+}
+```
+should receive 403 forbidden
+
 
 ## Additional information
 ### Service discovery (eureka)
