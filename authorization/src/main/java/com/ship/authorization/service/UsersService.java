@@ -2,6 +2,7 @@ package com.ship.authorization.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +16,20 @@ public class UsersService {
     public static final String ROLE_LIEUTENANT = "ROLE_LIEUTENANT";
     public static final String ROLE_ENSIGN = "ROLE_ENSIGN";
     public static final String ROLE_CREWMAN = "ROLE_CREWMAN";
+
+    public static final Map<String, Integer> ROLE_VALUES;
+
+    static {
+        Map<String, Integer> aMap = new HashMap<>();
+        aMap.put(ROLE_ADMIRAL, 6);
+        aMap.put(ROLE_VICE_ADMIRAL, 5);
+        aMap.put(ROLE_CAPTAIN, 4);
+        aMap.put(ROLE_COMMANDER, 3);
+        aMap.put(ROLE_LIEUTENANT, 2);
+        aMap.put(ROLE_ENSIGN, 1);
+        aMap.put(ROLE_CREWMAN, 0);
+        ROLE_VALUES = Collections.unmodifiableMap(aMap);
+    }
 
     private Map<String, String> users = new HashMap<>();
 
