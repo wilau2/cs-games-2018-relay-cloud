@@ -44,6 +44,13 @@ public class AuthorizationController {
                     throw new ForbiddenAccessException();
                 }
             }
+
+            int senderAuth = usersService.loadUserAuth(grantedAuthority.getAuthority());
+            int recipientAuth = usersService.loadUserAuth(recipientRole);
+
+            if (recipientAuth > senderAuth + 1) {
+                throw new ForbiddenAccessException();
+            }
         }
     }
 }
