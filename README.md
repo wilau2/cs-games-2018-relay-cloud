@@ -1,5 +1,8 @@
 # Java micro-services
 
+BATTLESTARCONCORDIA_SERVICES_HOUR1
+- [x] Adds whitespace, rip
+
 ## Build
 build all projects
 ```
