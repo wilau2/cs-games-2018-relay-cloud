@@ -27,18 +27,19 @@ public class Message implements Serializable {
     @Column(nullable = false)
     private String sender;
 
+    @Column(nullable = false)
+    private String department;
+
     @JsonCreator
-    public Message(@JsonProperty("id") Long id,
-                   @JsonProperty("title") String title,
-                   @JsonProperty("content") String content,
-                   @JsonProperty("recipient") String recipient,
-                   @JsonProperty("sender") String sender
-                   ) {
+    public Message(@JsonProperty("id") Long id, @JsonProperty("title") String title,
+            @JsonProperty("content") String content, @JsonProperty("recipient") String recipient,
+            @JsonProperty("sender") String sender, @JsonProperty("departement") String departement) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.recipient = recipient;
         this.sender = sender;
+        this.department = departement;
     }
 
     public Message() {
@@ -84,4 +85,11 @@ public class Message implements Serializable {
         this.sender = sender;
     }
 
+    public String getDepartement() {
+        return department;
+    }
+
+    public void setDepartement(String departement) {
+        this.department = departement;
+    }
 }

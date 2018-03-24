@@ -33,15 +33,16 @@ public class MessageController {
     private MessageRepository messageRepository;
 
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
-    public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String session) {
-        checkAccess(new ActionDto(message.getRecipient()), session);
-        logMessage(message, session);
+    public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String cookie,
+            Authentication authentication) {
+        checkAccess(new ActionDto(message.getRecipient()), cookie);
         return messageRepository.save(message);
     }
 
     @RequestMapping(value = "/messages", method = RequestMethod.GET)
     public Resources<Resource<Message>> sendMessage() {
-        return new Resources<>(StreamSupport.stream(messageRepository.findAll().spliterator(),false).map(MessageResource::toResource).collect(Collectors.toList()));
+        return new Resources<>(StreamSupport.stream(messageRepository.findAll().spliterator(), false)
+                .map(MessageResource::toResource).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -60,20 +61,7 @@ public class MessageController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Cookie", "SESSION=" + session);
 
-        HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
-        restTemplate.postForObject(url, entity, String.class);
-    }
-
-    private void logMessage(Message message, String session) {
-        ServiceInstance service = discoveryClient.getInstances("communication").get(0);
-        String url = "http://" + service.getHost() + ":" + service.getPort() + "/" + "logMessage";
-
-        String requestJson = "{\"title\":\"" + message.getTitle() + ", \"type\": \"message\" \"}";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("Cookie", "SESSION=" + session);
-
-        HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
+        HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
         restTemplate.postForObject(url, entity, String.class);
     }
 
