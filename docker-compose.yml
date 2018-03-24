@@ -1,18 +1,26 @@
 version: "3"
 services:
+
     eureka-server:
         build: ./eureka-server
         volumes:
-            - ./eureka-server:/home/eureka-server
             - .:/home
         command: /home/gradlew :eureka-server:bootRun -Dspring.profiles.active=native
 
+    authorization:
+        build: ./authorization
+        volumes:
+            - .:/home
+        command: /home/gradlew :authorization:bootRun -Dspring.profiles.active=native
 
-    #authorization:
-        #build: ./authorization
+    config-server:
+        build: ./config-server
+        volumes:
+            - .:/home
+        command: /home/gradlew :config-server:bootRun -Dspring.profiles.active=native
 
-    #config-server:
-        #build: ./config-server
-
-    #zuul-server:
-        #build: ./zuul-server
+    zuul-server:
+        build: ./zuul-server
+        volumes:
+            - .:/home
+        command: /home/gradlew :zuul-server:bootRun -Dspring.profiles.active=native
