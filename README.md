@@ -1,5 +1,11 @@
 # Java micro-services
 
+BATTLESTARCONCORDIA_SERVICES_HOUR1
+- [x] Adds whitespace, rip
+
+^
+
+
 ## Build
 build all projects
 ```
@@ -178,4 +184,5 @@ Centralize configuration for all micro services.
 ## References
  - [Spring cloud bootstrap](https://github.com/eugenp/tutorials/tree/master/spring-cloud/spring-cloud-bootstrap)
  - [Securing cloud services](http://www.baeldung.com/spring-cloud-securing-services)
+
 
