@@ -25,7 +25,7 @@ update your local path: in `config-server/src/main/resources`
 ```
 ./gradlew :config-server:bootRun -Dspring.profiles.active=native
 ```
-to test it worked:  
+to test it worked:
 `GET` url: `http://configUser:configPassword@localhost:8888/config/eureka-server.yml`
 should output:
 ```
@@ -171,7 +171,7 @@ You can add AOP for all micro services
 #### Security
 To simplify the security, we're using basic authentication.
 You have to synchronize the users you want to use in the application both in `com.ship.zuulserver.SecurityConfig` and `com.ship.authorization.service.UsersService`
- 
+
 ### Config server
 Centralize configuration for all micro services.
 
