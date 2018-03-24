@@ -1,5 +1,6 @@
 package com.ship.communication.controller;
 
+import com.ship.authorization.ForbiddenAccessException;
 import com.ship.communication.model.Message;
 import com.ship.communication.model.resource.MessageResource;
 import com.ship.communication.repository.MessageRepository;
@@ -60,7 +61,12 @@ public class MessageController {
         headers.add("Cookie", "SESSION=" + session);
 
         HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
-        restTemplate.postForObject(url, entity, String.class);
+        String res = restTemplate.postForObject(url, entity, String.class);
+
+        // (1pt) As any crew member, I can reply to a personal message if I have the authorization to do so
+        if (res == null){
+            throw new ForbiddenAccessException();
+        }
     }
 
 }

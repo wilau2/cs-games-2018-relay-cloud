@@ -179,3 +179,6 @@ Centralize configuration for all micro services.
  - [Spring cloud bootstrap](https://github.com/eugenp/tutorials/tree/master/spring-cloud/spring-cloud-bootstrap)
  - [Securing cloud services](http://www.baeldung.com/spring-cloud-securing-services)
 
+## From Eric
+ I just get a little bit confused, I just added the Rank into it.
+ No familiar with the server
