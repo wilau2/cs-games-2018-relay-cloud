@@ -1,3 +1,4 @@
+# idk try following this http://thediscoblog.com/blog/2014/06/13/docker-containers-with-gradle-in-4-steps/
 # Java micro-services
 
 ## Build
@@ -178,4 +179,3 @@ Centralize configuration for all micro services.
 ## References
  - [Spring cloud bootstrap](https://github.com/eugenp/tutorials/tree/master/spring-cloud/spring-cloud-bootstrap)
  - [Securing cloud services](http://www.baeldung.com/spring-cloud-securing-services)
-
