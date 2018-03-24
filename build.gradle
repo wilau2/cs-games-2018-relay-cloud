@@ -3,15 +3,28 @@ buildscript {
         springBootVersion = '2.0.0.M6'
     }
     repositories {
+        jcenter()
         mavenCentral()
         maven { url "https://repo.spring.io/snapshot" }
         maven { url "https://repo.spring.io/milestone" }
         maven { url 'https://repo.spring.io/libs-milestone'}
     }
     dependencies {
+        classpath "com.bmuschko:gradle-docker-plugin:3.0.3"
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath "io.spring.gradle:dependency-management-plugin:0.5.6.RELEASE"
     }
+}
+
+apply plugin: 'com.bmuschko.docker-remote-api'
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
+task assemble{}
+
+task buildDocker(type: DockerBuildImage) {
+    dependsOn assemble
+    inputDir = project.rootDir
+    tag = "infra/battlestar"
 }
 
 subprojects {
@@ -41,5 +54,35 @@ subprojects {
         maven { url 'https://repo.spring.io/libs-milestone'}
         maven { url 'https://repo.spring.io/libs-snapshot'
         }
+    }
+
+    task buildDocker(type: Exec) {
+      executable "sh"
+      args "-c", "docker-compose build"
+    }
+
+    task buildDockerAuthorization(type: Exec) {
+      executable "sh"
+      args "-c", "docker-compose build authorization"
+    }
+
+    task buildDockerCommunication(type: Exec) {
+      executable "sh"
+      args "-c", "docker-compose build communication"
+    }
+
+    task buildDockerConfigServer(type: Exec) {
+      executable "sh"
+      args "-c", "docker-compose build config-server"
+    }
+
+    task buildDockerEurekaServer(type: Exec) {
+      executable "sh"
+      args "-c", "docker-compose build eureka-server"
+    }
+
+    task buildDockerZuulServer(type: Exec) {
+      executable "sh"
+      args "-c", "docker-compose build zuul-server"
     }
 }
