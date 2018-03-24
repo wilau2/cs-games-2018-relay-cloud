@@ -1,3 +1,11 @@
+# Hour 1
+- [x] (2pt) Create a dockerfile for each projects in `settings.gradle`
+- [x] (1pt) Create a gradle task to build all docker, the task could look like `./gradlew clean build buildDocker -x test`
+- [ ] (0.5pt) Create a gradle task to build single docker images when you are working in only one module
+- [x] (2pt) Create a docker-compose version 3+ file to orchestrate de booting of all modules
+
+
+
 # Java micro-services
 
 ## Build
@@ -25,7 +33,7 @@ update your local path: in `config-server/src/main/resources`
 ```
 ./gradlew :config-server:bootRun -Dspring.profiles.active=native
 ```
-to test it worked:  
+to test it worked:
 `GET` url: `http://configUser:configPassword@localhost:8888/config/eureka-server.yml`
 should output:
 ```
@@ -171,7 +179,7 @@ You can add AOP for all micro services
 #### Security
 To simplify the security, we're using basic authentication.
 You have to synchronize the users you want to use in the application both in `com.ship.zuulserver.SecurityConfig` and `com.ship.authorization.service.UsersService`
- 
+
 ### Config server
 Centralize configuration for all micro services.
 
