@@ -15,8 +15,16 @@ public class UsersService {
     public static final String ROLE_LIEUTENANT = "ROLE_LIEUTENANT";
     public static final String ROLE_ENSIGN = "ROLE_ENSIGN";
     public static final String ROLE_CREWMAN = "ROLE_CREWMAN";
+    public static final String DEPARTMENT_OPERATIONS = "DEPARTMENT_OPERATIONS";
+    public static final String DEPARTMENT_MEDICAL = "DEPARTMENT_MEDICAL";
+    public static final String DEPARTMENT_SCIENCE = "DEPARTMENT_SCIENCE";
+    public static final String DEPARTMENT_COMMAND = "DEPARTMENT_COMMAND";
 
     private Map<String, String> users = new HashMap<>();
+
+    private Map<String, Integer> userRanks = new HashMap<>();
+
+    private Map<String, String> userDepartment = new HashMap<>();
 
     public UsersService() {
         users.put("admiral", ROLE_ADMIRAL);
@@ -26,9 +34,29 @@ public class UsersService {
         users.put("lieutenant", ROLE_LIEUTENANT);
         users.put("ensign", ROLE_ENSIGN);
         users.put("crewman", ROLE_CREWMAN);
+
+        userRanks.put(ROLE_ADMIRAL, 1);
+        userRanks.put(ROLE_VICE_ADMIRAL, 2);
+        userRanks.put(ROLE_CAPTAIN, 3);
+        userRanks.put(ROLE_COMMANDER, 4);
+        userRanks.put(ROLE_LIEUTENANT, 5);
+        userRanks.put(ROLE_ENSIGN, 6);
+        userRanks.put(ROLE_CREWMAN, 7);
+
+        userDepartment.put("operations", DEPARTMENT_OPERATIONS);
+        userDepartment.put("medical", DEPARTMENT_MEDICAL);
+        userDepartment.put("science", DEPARTMENT_SCIENCE);
+        userDepartment.put("command", DEPARTMENT_COMMAND);
+
     }
 
     public String loadUserRole(String username) {
         return users.get(username);
+    }
+
+    public String getUserDepartment(String username) { return userDepartment.get(username); }
+
+    public int getUserRank(String userRole) {
+        return userRanks.get(userRole);
     }
 }
