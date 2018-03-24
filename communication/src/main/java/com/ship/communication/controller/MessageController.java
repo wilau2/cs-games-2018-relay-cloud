@@ -22,7 +22,6 @@ import java.util.stream.StreamSupport;
 
 @RestController
 public class MessageController {
-
     @Autowired
     private DiscoveryClient discoveryClient;
 
@@ -54,13 +53,14 @@ public class MessageController {
         ServiceInstance service = discoveryClient.getInstances("authorization").get(0);
         String url = "http://" + service.getHost() + ":" + service.getPort() + "/" + "checkAccess";
 
+        String sender = actionDto.getSender();
         String requestJson = "{\"recipient\":\"" + actionDto.getRecipient() + "\"}";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Cookie", "SESSION=" + session);
 
-        HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
+        HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
         restTemplate.postForObject(url, entity, String.class);
+        // TODO envoyer notif au recipient
     }
-
 }
