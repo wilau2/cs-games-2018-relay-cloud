@@ -5,3 +5,34 @@ include 'eureka-server'
 include 'zuul-server'
 
 include 'communication'
+
+task AuthorizationDocker{
+        new File("./authorization/AuthorizationDocker.txt").text = "
+            //content to go the docker file
+        "
+}
+
+
+task CommunicatoinDocker{
+     new File("./communication/CommunicationDocker.txt").text = "
+            //content to go the docker file
+        "
+}
+
+task ConfigServerDocker{
+     new File("./config-server/ConfigServerDocker.txt").text = "
+            //content to go the docker file
+        "
+}
+
+task EurekaServer{
+    new File("./eureka-server/EurekaServerDocker.txt").text = "
+            //content to go the docker file
+        "
+}
+
+task ZuulServer{
+    new File("./zuul-server/ZuulServerDocker.txt").text = "
+            //content to go the docker file
+        "
+}
