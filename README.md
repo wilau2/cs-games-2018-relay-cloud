@@ -13,7 +13,8 @@
 - [x] (0.5pt) Only Zuul port is available on the host machine
         - Only Zuul port specified in docker-compose.yml, rest of services communicate over `csgames_net` bridge network.
 
-(1pt) Make sure your able to override parts of the docker-compose give an exemple with the stack pointing on an external redis with a public url.
+- [x] (1pt) Make sure your able to override parts of the docker-compose give an exemple with the stack pointing on an external redis with a public url.
+    - Shows a proof-of-concept with composed docker-compose files. Executing `docker-compose -f docker-compose.yml -f docker-compose.external-redis.yml build` would result in building a Redis image with a different build argument, which could be used to change the endpoint.
 
 
 ## Build

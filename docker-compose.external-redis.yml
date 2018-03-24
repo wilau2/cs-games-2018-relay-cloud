@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  redis:
+    build:
+      args:
+        EXTERNAL_REDIS_URL: 'somewhere-else.com/redis'
+
+
