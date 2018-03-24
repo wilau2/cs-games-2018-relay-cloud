@@ -18,6 +18,8 @@ public class UsersService {
 
     private Map<String, String> users = new HashMap<>();
 
+    private Map<String, Integer> userRanks = new HashMap<>();
+
     public UsersService() {
         users.put("admiral", ROLE_ADMIRAL);
         users.put("viceAdmiral", ROLE_VICE_ADMIRAL);
@@ -26,9 +28,21 @@ public class UsersService {
         users.put("lieutenant", ROLE_LIEUTENANT);
         users.put("ensign", ROLE_ENSIGN);
         users.put("crewman", ROLE_CREWMAN);
+
+        userRanks.put(ROLE_ADMIRAL, 1);
+        userRanks.put(ROLE_VICE_ADMIRAL, 2);
+        userRanks.put(ROLE_CAPTAIN, 3);
+        userRanks.put(ROLE_COMMANDER, 4);
+        userRanks.put(ROLE_LIEUTENANT, 5);
+        userRanks.put(ROLE_ENSIGN, 6);
+        userRanks.put(ROLE_CREWMAN, 7);
     }
 
     public String loadUserRole(String username) {
         return users.get(username);
+    }
+
+    public int getUserRank(String userRole) {
+        return userRanks.get(userRole);
     }
 }
