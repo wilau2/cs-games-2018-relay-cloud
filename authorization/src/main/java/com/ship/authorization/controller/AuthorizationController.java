@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import static com.ship.authorization.service.UsersService.*;
+import static com.ship.authorization.service.UsersService.ROLE_ADMIRAL;
+import static com.ship.authorization.service.UsersService.ROLE_CREWMAN;
 
 @RestController
 public class AuthorizationController {
@@ -39,29 +40,9 @@ public class AuthorizationController {
 
         for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()){
             if (grantedAuthority.getAuthority().equals(ROLE_CREWMAN)) {
-                if (recipientRole.contains(ROLE_ADMIRAL) || recipientRole.contains(ROLE_VICE_ADMIRAL) ||recipientRole.contains(ROLE_CAPTAIN) ||recipientRole.contains(ROLE_COMMANDER) ||recipientRole.contains(ROLE_LIEUTENANT)) {
-                    throw new ForbiddenAccessException();
-                } 
-            }
-            else if (grantedAuthority.getAuthority().equals(ROLE_ENSIGN)) {
-                if (recipientRole.contains(ROLE_ADMIRAL) || recipientRole.contains(ROLE_VICE_ADMIRAL) ||recipientRole.contains(ROLE_CAPTAIN) ||recipientRole.contains(ROLE_COMMANDER)) {
-                    throw new ForbiddenAccessException();
-                } 
-            }
-            else if (grantedAuthority.getAuthority().equals(ROLE_LIEUTENANT)) {
-                if (recipientRole.contains(ROLE_ADMIRAL) || recipientRole.contains(ROLE_VICE_ADMIRAL) ||recipientRole.contains(ROLE_CAPTAIN)) {
-                    throw new ForbiddenAccessException();
-                } 
-            }
-            else if (grantedAuthority.getAuthority().equals(ROLE_COMMANDER)) {
-                if (recipientRole.contains(ROLE_ADMIRAL) || recipientRole.contains(ROLE_VICE_ADMIRAL)) {
-                    throw new ForbiddenAccessException();
-                } 
-            }
-            else if (grantedAuthority.getAuthority().equals(ROLE_CAPTAIN)) {
                 if (recipientRole.contains(ROLE_ADMIRAL)) {
                     throw new ForbiddenAccessException();
-                } 
+                }
             }
         }
     }
