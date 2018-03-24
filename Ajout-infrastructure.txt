@@ -1,0 +1,2 @@
+1. Dupliquer N fois les micros services et configurer Eureka pour rediriger, afin de reduire la quantité de données traitées par chaque micro-services.
+2. Cloner l'infra derrière Zuul (donc eureka et les micros-services, etc) sur différents serveurs servant différentes régions et rediriger les requêtes en fonction du lieu de l'usager.
