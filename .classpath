@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="authorization/src/main/java"/>
+	<classpathentry kind="src" path="authorization/src/test/java"/>
+	<classpathentry kind="src" path="communication/src/main/java"/>
+	<classpathentry kind="src" path="communication/src/test/java"/>
+	<classpathentry kind="src" path="config-server/src/main/java"/>
+	<classpathentry kind="src" path="eureka-server/src/main/java"/>
+	<classpathentry kind="src" path="eureka-server/src/test/java"/>
+	<classpathentry kind="src" path="zuul-server/src/main/java"/>
+	<classpathentry kind="src" path="zuul-server/src/test/java"/>
+	<classpathentry kind="lib" path="gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
