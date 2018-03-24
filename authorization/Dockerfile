@@ -1,24 +1,5 @@
-#
-# OpenJDK Java 7 JRE Dockerfile
-#
-# https://github.com/dockerfile/java
-# https://github.com/dockerfile/java/tree/master/openjdk-7-jre
-#
+FROM gradle:alpine
 
-# Pull base image.
-FROM dockerfile/ubuntu
+COPY ./ /app
 
-# Install Java.
-RUN \
-  apt-get update && \
-  apt-get install -y openjdk-7-jre && \
-  rm -rf /var/lib/apt/lists/*
-
-# Define working directory.
-WORKDIR /data
-
-# Define commonly used JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
-
-# Define default command.
-CMD ["bash"]
+RUN /app/gradlew :config-server:bootRun -Dspring.profiles.active=native
