@@ -1,0 +1,48 @@
+version: "3"
+services:
+  authorization:
+    build:
+      context: ./
+      dockerfile: Dockerfile_Auth
+    ports:
+      - 8090:8090
+
+  communication:
+    build:
+      context: ./
+      dockerfile: Dockerfile_Comm
+    ports:
+      - 8100:8100
+
+  config-server:
+    build:
+      context: ./
+      dockerfile: Dockerfile_Config_Server
+    ports:
+      - 8888:8888
+    depends_on:
+      - redis
+
+  eureka-server:
+    build:
+      context: ./
+      dockerfile: Dockerfile_Eureka_Server
+    ports:
+      - 8082:8082
+    depends_on:
+      - config-server
+
+  zuul-server:
+    build:
+      context: ./
+      dockerfile: Dockerfile_Zuul_Server
+    ports:
+      - 9090:9090
+    depends_on:
+      - authorization
+      - communication
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
