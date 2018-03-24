@@ -39,8 +39,18 @@ public class AuthorizationController {
         System.out.println("Role: " + recipientRole);
 
         for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()){
-            if (grantedAuthority.getAuthority().equals(ROLE_CREWMAN)) {
-                if (recipientRole.contains(ROLE_ADMIRAL)) {
+            if ((grantedAuthority.getAuthority().equals(ROLE_CREWMAN) && (recipientRole.contains(ROLE_ADMIRAL) ||
+                recipientRole.contains(ROLE_VICE_ADMIRAL) || recipientRole.contains(ROLE_CAPTAIN) ||
+                recipientRole.contains(ROLE_COMMANDER) || recipientRole.contains(ROLE_COMMANDER) || recipientRole.contains(ROLE_LIEUTENANT))) ||
+
+                (grantedAuthority.getAuthority().equals(ROLE_ENSIGN) && (recipientRole.contains(ROLE_COMMANDER) ||
+                  recipientRole.contains(ROLE_CAPTAIN) || recipientRole.contains(ROLE_VICE_ADMIRAL) || recipientRole.contains(ROLE_ADMIRAL)))
+
+                (grantedAuthority.getAuthority().equals(ROLE_LIEUTENANT) && (recipientRole.contains(ROLE_ADMIRAL) ||
+                    recipientRole.contains(ROLE_VICE_ADMIRAL) || recipientRole.contains(ROLE_CAPTAIN))) ||
+
+                (grantedAuthority.getAuthority().equals(ROLE_COMMANDER) && (recipientRole.contains(ROLE_ADMIRAL) ||
+                    recipientRole.contains(ROLE_VICE_ADMIRAL)))) {
                     throw new ForbiddenAccessException();
                 }
             }

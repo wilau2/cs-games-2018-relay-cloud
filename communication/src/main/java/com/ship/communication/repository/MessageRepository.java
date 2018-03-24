@@ -6,4 +6,5 @@ import org.springframework.data.repository.query.Param;
 
 public interface MessageRepository extends PagingAndSortingRepository<Message, Long> {
     public Message findByTitle(@Param("title") String title);
+    public Message save();
 }
