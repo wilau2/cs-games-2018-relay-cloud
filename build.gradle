@@ -14,6 +14,30 @@ buildscript {
     }
 }
 
+task buildAuthorization(type: Exec) {
+    commandLine "docker", "build", "authorization"
+}
+
+task buildCommunication(type: Exec) {
+    commandLine "docker", "build", "communication"
+}
+
+task buildConfigserver(type: Exec) {
+    commandLine "docker", "build", "config-server"
+}
+
+task buildEurekaserver(type: Exec) {
+    commandLine "docker", "build", "eureka-server"
+}
+
+task buildZuulserver(type: Exec) {
+    commandLine "docker", "build", "zuul-server"
+}
+
+task buildDocker(dependsOn:
+    [buildAuthorization, buildCommunication, buildConfigserver,
+    buildEurekaserver, buildZuulserver])
+
 subprojects {
     apply plugin: 'idea'
     apply plugin: 'java'
