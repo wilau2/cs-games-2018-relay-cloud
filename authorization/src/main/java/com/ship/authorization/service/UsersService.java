@@ -28,6 +28,27 @@ public class UsersService {
         users.put("crewman", ROLE_CREWMAN);
     }
 
+    public int getUserLevel(String rank){
+        switch(rank){
+            case ROLE_CREWMAN:
+                return 0;
+            case ROLE_ENSIGN:
+                return 1;
+            case ROLE_LIEUTENANT:
+                return 2;
+            case ROLE_COMMANDER:
+                return 3;
+            case ROLE_CAPTAIN:
+                return 4;
+            case ROLE_VICE_ADMIRAL:
+                return 5;
+            case ROLE_ADMIRAL:
+                return 6;
+            default:
+                return -1;
+        }
+    }
+
     public String loadUserRole(String username) {
         return users.get(username);
     }

@@ -38,6 +38,17 @@ public class AuthorizationController {
         String recipientRole = usersService.loadUserRole(actionDto.getRecipient());
         System.out.println("Role: " + recipientRole);
 
+        int userRank = 0;
+        int recipientRank = usersService.getUserLevel(recipientRole);
+        for (GrantedAuthority authority: userDetails.getAuthorities()){
+            userRank = Math.max(userRank, usersService.getUserLevel(authority.getAuthority()));
+        }
+
+        // As any crew member, I can create a personal message to anyone with my current rank + 1 and lower
+        if (userRank + 1 > recipientRank){
+            throw new ForbiddenAccessException();
+        }
+
         for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()){
             if (grantedAuthority.getAuthority().equals(ROLE_CREWMAN)) {
                 if (recipientRole.contains(ROLE_ADMIRAL)) {
