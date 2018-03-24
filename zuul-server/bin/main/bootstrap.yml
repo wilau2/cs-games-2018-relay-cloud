@@ -1,0 +1,12 @@
+spring.cloud.config:
+  name: zuul-server
+  username: configUser
+  password: configPassword
+
+---
+spring.profiles: native
+spring.cloud.config.uri: http://localhost:8888
+
+---
+spring.profiles: docker
+spring.cloud.config.uri: http://config-server:8888

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class UsersService {
+public class UsersRoleService {
 
     public static final String ROLE_ADMIRAL = "ROLE_ADMIRAL";
     public static final String ROLE_VICE_ADMIRAL = "ROLE_VICE_ADMIRAL";
@@ -18,7 +18,7 @@ public class UsersService {
 
     private Map<String, String> users = new HashMap<>();
 
-    public UsersService() {
+    public UsersRoleService() {
         users.put("admiral", ROLE_ADMIRAL);
         users.put("viceAdmiral", ROLE_VICE_ADMIRAL);
         users.put("captain", ROLE_CAPTAIN);
