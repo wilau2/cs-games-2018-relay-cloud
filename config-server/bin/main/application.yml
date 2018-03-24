@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: config-server
+
+server:
+  port: 8888
+
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+
+security.user:
+  name: configUser
+  password: configPassword
+  role: SYSTEM
+
+---
+spring:
+  profiles: native
+  cloud.config.server.native.search-locations: file:///${user.home}/Documents/wilau2/cs-games-2018-relay-cloud/config-server/config
+
+eureka:
+  client:
+    service-url.defaultZone: http://discUser:discPassword@localhost:8082/eureka
+
+---
+spring:
+  profiles: docker
+  cloud.config.server.native.search-locations: file:/app/config
+
+eureka:
+  client:
+    service-url.defaultZone: http://discUser:discPassword@service-discovery:8082/eureka
