@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static com.ship.authorization.service.UsersService.ROLE_ADMIRAL;
 import static com.ship.authorization.service.UsersService.ROLE_CREWMAN;
 
@@ -39,11 +42,33 @@ public class AuthorizationController {
         System.out.println("Role: " + recipientRole);
 
         for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()){
-            if (grantedAuthority.getAuthority().equals(ROLE_CREWMAN)) {
-                if (recipientRole.contains(ROLE_ADMIRAL)) {
-                    throw new ForbiddenAccessException();
-                }
+
+            if (!recipientIsEligible(grantedAuthority.getAuthority().toString(), recipientRole.toString())) {
+                throw new ForbiddenAccessException();
             }
+//            if (grantedAuthority.getAuthority().equals(ROLE_CREWMAN)) {
+//                if (recipientRole.contains(ROLE_ADMIRAL)) {
+//                    throw new ForbiddenAccessException();
+//                }
+//            }
+        }
+    }
+
+    private boolean recipientIsEligible(String senderRank, String receiverRank) {
+        List ranks = Arrays.asList(new String[]{"ADMIRAL",
+                "VICE_ADMIRAL",
+                "CAPTAIN",
+                "COMMANDER",
+                "LIEUTENANT",
+                "ENSIGN",
+                "CREWMAN"});
+
+        int senderRankIndex = ranks.indexOf(senderRank);
+        int receiverRankIndex = ranks.indexOf(receiverRank);
+        if (Math.abs(receiverRankIndex - senderRankIndex) < 2) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
