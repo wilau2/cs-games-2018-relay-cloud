@@ -43,3 +43,18 @@ subprojects {
         }
     }
 }
+
+
+def buildDockers = {
+    exec {
+        commandLine "docker", "build", "authorization/"
+        commandLine "docker", "build", "communication/"
+        commandLine "docker", "build", "config-server/"
+        commandLine "docker", "build", "eureka-server/"
+        commandLine "docker", "build", "zuul-server/"
+    }
+}
+
+task buildDocker(type: Exec) {
+    buildDockers()
+}
