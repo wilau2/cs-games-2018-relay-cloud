@@ -1,0 +1,13 @@
+version: "3"
+services:
+    eureka-server:
+        build: ./eureka-server
+
+    authorization:
+        build: ./authorization
+
+    config-server:
+        build: ./config-server
+
+    zuul-server:
+        build: ./zuul-server
