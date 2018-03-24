@@ -35,6 +35,7 @@ public class MessageController {
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String cookie) {
         checkAccess(new ActionDto(message.getRecipient()), cookie);
+        logMessage(message, session);
         return messageRepository.save(message);
     }
 
@@ -55,6 +56,19 @@ public class MessageController {
         String url = "http://" + service.getHost() + ":" + service.getPort() + "/" + "checkAccess";
 
         String requestJson = "{\"recipient\":\"" + actionDto.getRecipient() + "\"}";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Cookie", "SESSION=" + session);
+
+        HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
+        restTemplate.postForObject(url, entity, String.class);
+    }
+
+    private void logMessage(Message message, String session) {
+        ServiceInstance service = discoveryClient.getInstances("communication").get(0);
+        String url = "http://" + service.getHost() + ":" + service.getPort() + "/" + "logMessage";
+
+        String requestJson = "{\"title\":\"" + message.getTitle() + ", \"type\": \"message\" \"}";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Cookie", "SESSION=" + session);
