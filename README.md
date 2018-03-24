@@ -19,7 +19,7 @@ docker pull redis:4.0.8-alpine
 docker run --name redis -p 6379:6379 redis:4.0.8-alpine
 ```
 ### config-server
-update your local path: in `config-server/src/main/resources`
+**update your local path: in `config-server/src/main/resources`**
 
 `cloud.config.server.native.search-locations: file:///${user.home}/{pathToGitRepo}/cs-games-2018-relay-cloud/config-server/config`
 ```
@@ -179,3 +179,10 @@ Centralize configuration for all micro services.
  - [Spring cloud bootstrap](https://github.com/eugenp/tutorials/tree/master/spring-cloud/spring-cloud-bootstrap)
  - [Securing cloud services](http://www.baeldung.com/spring-cloud-securing-services)
 
+## Docker Compose Instructions
+
+Run these in order:
+
+`docker-compose build`
+
+`docker-compose up`
