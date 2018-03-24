@@ -34,16 +34,57 @@ public class MessageController {
     @Autowired
     private MessageRepository messageRepository;
 
+    @Autowired
+    private MessageRepository messageRequestRepository;
+
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String cookie) {
         checkAccess(new ActionDto(message.getRecipient()), cookie);
-        //if (checkRank(message)) {
+        
+        // si le rank du receiver est 2 au dessus de celui du sender, 
+        // il faut que le message soit approuvé par les niveaux supérieurs
+        if (messageRequiresApproval(message)){
+            return messageRequestRepository.createMessageRequest(message);
+        }
+
+        // sinon, si le message est à envoyer à un level au-dessus (ou inférieur),
+        // le message peut être envoyé directement
+        if (messageCanBeSentDirectly(message)) {
             return messageRepository.save(message);
-        //}
+        }
+
+        // sinon ben tu peux pas envoyer de message.
     }
 
     @RequestMapping(value = "/messages", method = RequestMethod.GET)
     public Resources<Resource<Message>> sendMessage() {
+        return new Resources<>(StreamSupport.stream(messageRepository.findAll().spliterator(),false).map(MessageResource::toResource).collect(Collectors.toList()));
+    }
+
+    // route pour qu'un user puisse voir les messages requests qu'il doit approuver/refuser
+    @RequestMapping(value = "/messageRequests", method = RequestMethod.GET)
+    public Resources<Resource<Message>> sendMessageRequest() {
+        return new Resources<>(StreamSupport.stream(messageRequestRepository.findAll().spliterator(),false).map(MessageResource::toResource).collect(Collectors.toList()));
+    }
+
+    // route pour permettre d'approuver/refuser une demande de message
+    @RequestMapping(value = "/messageRequests", method = RequestMethod.POST)
+    public Message sendMessage(@RequestBody String messageTitle, @RequestBody boolean isApproved, @CookieValue("SESSION") String cookie) {
+        checkAccess(new ActionDto(message.getRecipient()), cookie);
+        
+        // on récupère le message dans le messageRepository
+        Message message = new Resources<>(StreamSupport.stream(messageRepository.findByTitle(messageTitle).spliterator(),false);
+        
+        // j'ai inventé une propriété "isApproved" aux Messages
+        message.isApproved = isApproved;
+        
+        // TODO: envoyer une notification si le message est approuvé
+    }
+
+    // route pour qu'un user puisse voir les logs des messages envoyés par les users inférieurs à son rôle
+    @RequestMapping(value = "/logs", method = RequestMethod.GET)
+    public Resources<Resource<Message>> seeLogs() {
+        // TODO: vérifier le ranking pour que seulement les messages des users ayant un ranking inférieur soient affichés
         return new Resources<>(StreamSupport.stream(messageRepository.findAll().spliterator(),false).map(MessageResource::toResource).collect(Collectors.toList()));
     }
 
@@ -67,13 +108,24 @@ public class MessageController {
         restTemplate.postForObject(url, entity, String.class);
     }
 
-    private boolean checkRank(Message message) {
+    // checks if the message can be sent based on the difference between the
+    // sender's and the receiver's ranking levels
+    private boolean checkRank(Message message, int levelDelta){
         String recipientRole = UsersService.loadUserRole(message.getRecipient());
         int recipientRank = RankService.getUserRank(recipientRole);
         String senderRole = UsersService.loadUserRole(message.getSender());
         int senderRank = RankService.getUserRank(senderRole);
 
-        return recipientRank <= senderRank + 1;
+        return recipientRank <= senderRank + level;
     }
 
+    private boolean messageCanBeSentDirectly(Message message){
+        return checkRank(message, 1);
+    }
+
+    private boolean messageRequiresApproval(Message message){
+        return checkRank(message, 2);
+    }
+
+    
 }
