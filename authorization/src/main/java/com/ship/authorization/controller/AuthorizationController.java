@@ -33,7 +33,9 @@ public class AuthorizationController {
         System.out.println("User has authorities: " + userDetails.getAuthorities());
         System.out.println("Recipient: " + actionDto.getRecipient());
         String recipientRole = usersService.loadUserRole(actionDto.getRecipient());
+        String recipientDepartment = usersService.getUserDepartment(actionDto.getRecipient());
         System.out.println("Role: " + recipientRole);
+        System.out.println("Department: " + recipientDepartment);
 
         for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()){
             switch (grantedAuthority.getAuthority()) {
