@@ -28,7 +28,7 @@ public class UsersService {
         users.put("crewman", ROLE_CREWMAN);
     }
 
-    public String loadUserRole(String username) {
+    public static String loadUserRole(String username) {
         return users.get(username);
     }
 }

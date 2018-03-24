@@ -1,5 +1,7 @@
 package com.ship.communication.controller;
 
+import com.ship.authorization.service.RankService;
+import com.ship.authorization.service.UsersService;
 import com.ship.communication.model.Message;
 import com.ship.communication.model.resource.MessageResource;
 import com.ship.communication.repository.MessageRepository;
@@ -35,7 +37,9 @@ public class MessageController {
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String cookie) {
         checkAccess(new ActionDto(message.getRecipient()), cookie);
-        return messageRepository.save(message);
+        //if (checkRank(message)) {
+            return messageRepository.save(message);
+        //}
     }
 
     @RequestMapping(value = "/messages", method = RequestMethod.GET)
@@ -61,6 +65,15 @@ public class MessageController {
 
         HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
         restTemplate.postForObject(url, entity, String.class);
+    }
+
+    private boolean checkRank(Message message) {
+        String recipientRole = UsersService.loadUserRole(message.getRecipient());
+        int recipientRank = RankService.getUserRank(recipientRole);
+        String senderRole = UsersService.loadUserRole(message.getSender());
+        int senderRank = RankService.getUserRank(senderRole);
+
+        return recipientRank <= senderRank + 1;
     }
 
 }
