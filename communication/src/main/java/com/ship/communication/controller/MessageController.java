@@ -69,7 +69,7 @@ public class MessageController {
     }
 
     private boolean check_rank(String send_rank, String recipient_rank) {
-        String[] ranks = {"crewman", "ensign", "lieutenant", "commander", "captain", "vice_admiral", "admiral"};
+        String[] ranks = {"CREWMAN", "ENSIGN", "LIEUTENANT", "COMMANDER", "CAPTAIN", "VICE_ADMIRAL", "ADMIRAL"};
         int rank = ArrayUtils.indexOf(ranks, send_rank.toLowerCase());
         return ArrayUtils.indexOf(ranks, send_rank) <= ArrayUtils.indexOf(ranks, recipient_rank.toLowerCase()) + 1;
     }
