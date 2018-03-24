@@ -4,7 +4,7 @@ services:
         build: ./eureka-server
         volumes:
             - ./eureka-server:/home/eureka-server
-            - ./gradlew:/home/gradlew
+            - .:/home
         command: /home/gradlew :eureka-server:bootRun -Dspring.profiles.active=native
 
 
