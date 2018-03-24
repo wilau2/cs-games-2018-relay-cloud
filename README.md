@@ -1,5 +1,14 @@
 # Java micro-services
 
+## To improve in the architecture. 
+
+For what concerns security, we should expose as few ports as possible and have only secure calls from the outside, but security here is not the question here... Let's answer this for real now. 
+
+It seems that we need to start many microservices in parallel, the architecture is scattered there and there. This is tedious and the web app could be more self-contained. In just an hour, analysing this feels heavy. There is too much complexity in this project for such as scope. No localhost things called amid the code execution would be a good thing to have. Doing local API calls is inefficient in a local environment, both in term of software engineering, development, time spent, and material resources. We should just call code with packages in java rather than always passing trough many ridiculous REST APIS. Those excessive APIS consumes more RAM than it should, take more time to devlelop, are too complex, and on. I would work on simplifying the system and making it more lightweight on the architecture side. 
+
+What I would do with unilimited time is to find a way to merge those different services into one clean service to start. If needed, the database can still be left as a different microservice running elsewhere: it's common practice to decouple storage layers from  business logic. It could me more clear how and when to use docker and graddle. 
+
+
 ## Build
 build all projects
 ```
