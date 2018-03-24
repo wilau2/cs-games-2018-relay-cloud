@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.authentication.UserServiceBeanDefinitionParser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -63,6 +64,29 @@ public class AuthorizationController {
                     throw new ForbiddenAccessException();
                 } 
             }
+
+
+            // TODO: Fix la logique ici, pour ce use case: Je comprend pas trop qui est quoi, mais ca l'air simple une fois
+            // que c'est compris. Aussi je peux pas tester, les jvm font exploser mon orid. Jai du reboot 2 fois. RIP
+            /**
+             * As any crew member, if I send a message to someone +2 in rank, I need the authorization of
+             * every levels of hierarchy between me and the recipient
+             */
+            int recipientPower = UsersService.getRolePower(grantedAuthority.getAuthority());
+            int destinationPower = UsersService.getRolePower(grantedAuthority.getAuthority());
+
+            // were trying to send something to someone higher in ranks by 2.
+            // Make sure we have all the permissions between those 2 powers.
+            if ((destinationPower - recipientPower) >= 2) {
+                for (int i = recipientPower; i <= destinationPower; i++) {
+                    String role = UsersService.getRoleByPower(i);
+                    // if this permission is not granted, raise a ForbiddenAccessException.
+                    if (!recipientRole.contains(role)) {
+                        throw new ForbiddenAccessException();
+                    }
+                }
+            }
         }
+
     }
 }

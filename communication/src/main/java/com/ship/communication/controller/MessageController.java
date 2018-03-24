@@ -33,8 +33,8 @@ public class MessageController {
     private MessageRepository messageRepository;
 
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
-    public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String cookie) {
-        checkAccess(new ActionDto(message.getRecipient()), cookie);
+    public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String session) {
+        checkAccess(new ActionDto(message.getRecipient()), session);
         logMessage(message, session);
         return messageRepository.save(message);
     }
