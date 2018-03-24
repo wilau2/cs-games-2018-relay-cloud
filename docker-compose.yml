@@ -2,12 +2,18 @@ version: '3'
 
 services:
   authorization:
-    build: ./authorization
+    build: .
   communication:
-    build: ./communication
+    build: .
   config-server:
-    build: ./config-server
+    build: .
   eureka-server:
-    build: ./eureka-server
+    build: .
   zuul-server:
-    build: ./zuul-server
+    build: .
+    #not sure about this, you might need to remove it
+    ports:
+      - "8888:8888"
+    network_mode: 'host'
+
+#run with docker-compose up -d
