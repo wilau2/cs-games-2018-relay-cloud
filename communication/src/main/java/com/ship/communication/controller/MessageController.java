@@ -36,6 +36,9 @@ public class MessageController {
     public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String cookie) {
         checkAccess(new ActionDto(message.getRecipient()), cookie);
         return messageRepository.save(message);
+
+        //check for user who is sending the message based on cookie
+        //compare the ranks through an error
     }
 
     @RequestMapping(value = "/messages", method = RequestMethod.GET)
