@@ -38,9 +38,25 @@ public class AuthorizationController {
         String recipientRole = usersService.loadUserRole(actionDto.getRecipient());
         System.out.println("Role: " + recipientRole);
 
+        ArrayList<String> roles = new ArrayList<String>();
+        roles.add("ROLE_ADMIRAL");
+        roles.add("ROLE_VICE_ADMIRAL");
+        roles.add("ROLE_CAPTAIN");
+        roles.add("ROLE_COMMANDER");
+        roles.add("ROLE_LIEUTENANT");
+        roles.add("ROLE_ENSIGN");
+        roles.add("ROLE_CREWMAN");
+
         for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()){
+            int recipientRank = roles.indexOf(recipientRole);
+            int senderRank    = roles.indexOf(grantedAuthority.getAuthority());
+
+            if (recipientRank > senderRank+1){
+                throw new ForbiddenAccessException();
+            }
+
             if (grantedAuthority.getAuthority().equals(ROLE_CREWMAN)) {
-                if (recipientRole.contains(ROLE_ADMIRAL)) {
+                if (recipientRole.contains(ROLE_ADMIRAL) || ) {
                     throw new ForbiddenAccessException();
                 }
             }

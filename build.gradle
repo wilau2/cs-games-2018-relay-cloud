@@ -43,3 +43,7 @@ subprojects {
         }
     }
 }
+
+task buildDocker(type: Exec) {
+   commandLine "docker-compose", "build"
+}
