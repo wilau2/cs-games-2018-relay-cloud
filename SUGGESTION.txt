@@ -1,0 +1,3 @@
+I would use Archaius to offers external configuration instead of having a config-server service.
+
+This would offer us the luxury of being able to change configs without having to rebuild all our services. Also, it would be more secure in case any service become compromised.
