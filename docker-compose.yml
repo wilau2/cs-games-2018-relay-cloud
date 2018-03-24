@@ -6,12 +6,16 @@ services:
         volumes:
             - .:/home
         command: /home/gradlew :eureka-server:bootRun -Dspring.profiles.active=native
+        ports:
+            - 8082:8082
 
     authorization:
         build: ./authorization
         volumes:
             - .:/home
         command: /home/gradlew :authorization:bootRun -Dspring.profiles.active=native
+        ports:
+            - 9090:9090
 
     config-server:
         build: ./config-server
