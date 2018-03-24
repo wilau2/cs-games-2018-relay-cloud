@@ -28,3 +28,7 @@ services:
         volumes:
             - .:/home
         command: /home/gradlew :zuul-server:bootRun -Dspring.profiles.active=native
+
+
+    redis:
+        image: redis:4.0.8-alpine
