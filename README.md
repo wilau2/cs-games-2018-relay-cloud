@@ -3,9 +3,10 @@
 
 - [x] (2pt) Create a dockerfile for each projects in settings.gradle
         - They use a shared Dockerfile
-    (1pt) Create a gradle task to build all docker, the task could look like ./gradlew clean build buildDocker -x test
-    (0.5pt) Create a gradle task to build single docker images when you are working in only one module
--[x] (2pt) Create a docker-compose version 3+ file to orchestrate de booting of all modules
+- [x] (1pt) Create a gradle task to build all docker, the task could look like ./gradlew clean build buildDocker -x test
+- [x] (0.5pt) Create a gradle task to build single docker images when you are working in only one module
+        - See `buildDockerAuthorization`, `buildDockerAuthorization`, `buildDockerCommunication`, `buildDockerConfigServer`, `buildDockerEurekaServer`, and `buildDockerZuulServer` Gradle tasks in `build.gradle`
+- [x] (2pt) Create a docker-compose version 3+ file to orchestrate de booting of all modules
 
 - [x] (1pt) Dockerfile and script used by them are not duplicated in each projects
         - Same Dockerfile used for all components at root

@@ -55,4 +55,34 @@ subprojects {
         maven { url 'https://repo.spring.io/libs-snapshot'
         }
     }
+
+    task buildDocker(type: Exec) {
+      executable "sh"
+      args "-c", "cd .. && docker-compose build"
+    }
+
+    task buildDockerAuthorization(type: Exec) {
+      executable "sh"
+      args "-c", "cd .. && docker-compose build authorization"
+    }
+
+    task buildDockerCommunication(type: Exec) {
+      executable "sh"
+      args "-c", "cd .. && docker-compose build communication"
+    }
+
+    task buildDockerConfigServer(type: Exec) {
+      executable "sh"
+      args "-c", "cd .. && docker-compose build config-server"
+    }
+
+    task buildDockerEurekaServer(type: Exec) {
+      executable "sh"
+      args "-c", "cd .. && docker-compose build eureka-server"
+    }
+
+    task buildDockerZuulServer(type: Exec) {
+      executable "sh"
+      args "-c", "cd .. && docker-compose build zuul-server"
+    }
 }
