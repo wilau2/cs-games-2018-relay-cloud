@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -48,6 +49,9 @@ public class MessageController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         System.out.println("User: " + authentication.getName());
         System.out.println("User has authorities: " + userDetails.getAuthorities());
+        for (GrantedAuthority ga : userDetails.getAuthorities()) {
+            System.out.println(ga.getAuthority());
+        }
     }
 
     private void checkAccess(ActionDto actionDto, String session) {
