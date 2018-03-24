@@ -3,6 +3,8 @@ package com.ship.communication.controller;
 import com.ship.communication.model.Message;
 import com.ship.communication.model.resource.MessageResource;
 import com.ship.communication.repository.MessageRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -16,12 +18,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpSession;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @RestController
 public class MessageController {
+
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -32,9 +35,19 @@ public class MessageController {
     @Autowired
     private MessageRepository messageRepository;
 
+    public Message findByRecipientAndSender(String r, String s, MessageRepository mr){
+        // stub gg find da message 
+        return null;
+    }
+
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String cookie) {
-        checkAccess(new ActionDto(message.getRecipient()), cookie);
+        // log message
+        log.info(message.getTitle().toUpperCase() + ": " + message.getContent());
+        // allow the reply to a personal message
+        if(findByRecipientAndSender(message.getRecipient(), message.getSender()) === null) {
+            checkAccess(new ActionDto(message.getRecipient()), cookie);
+        }
         return messageRepository.save(message);
     }
 
