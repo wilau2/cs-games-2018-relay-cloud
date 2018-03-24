@@ -22,14 +22,6 @@ import java.util.stream.StreamSupport;
 
 @RestController
 public class MessageController {
-    const String admiral = "ADMIRAL";
-    const String vice_admiral = "VICE_ADMIRAL";
-    const String captain = "CAPTAIN";
-    const String commander = "COMMANDER";
-    const String lieutenant ="LIEUTENANT";
-    const String ensign = "ENSIGN";
-    const String crewman = "CREWMAN";
-    const String[] ranks = {admiral, vice_admiral, captain, commander, lieutenant, ensign, crewman};
     @Autowired
     private DiscoveryClient discoveryClient;
 
@@ -62,37 +54,13 @@ public class MessageController {
         String url = "http://" + service.getHost() + ":" + service.getPort() + "/" + "checkAccess";
 
         String sender = actionDto.getSender();
-        if (RankDifference(sender, actionDto.getRecipient()) + 1 >= 0) {
-            String requestJson = "{\"recipient\":\"" + actionDto.getRecipient() + "\"}";
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.add("Cookie", "SESSION=" + session);
+        String requestJson = "{\"recipient\":\"" + actionDto.getRecipient() + "\"}";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Cookie", "SESSION=" + session);
 
-            HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
-            restTemplate.postForObject(url, entity, String.class);
-            // TODO envoyer notif au recipient
-        }
-        else
-        {
-            // TODO Access denied
-        }
-    }
-
-    private int RankDifference(String rank1, String rank2)
-    {
-        int rank1Level = 0;
-        int rank2Level = 0;
-        for (int i = 0; i < ranks.length; ++i)
-        {
-            if (ranks[i] == rank1)
-            {
-                rank1Level = i;
-            }
-            if (ranks[i] == rank2)
-            {
-                rank2Level = i;
-            }
-        }
-        return rank1Level - rank2Level;
+        HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
+        restTemplate.postForObject(url, entity, String.class);
+        // TODO envoyer notif au recipient
     }
 }

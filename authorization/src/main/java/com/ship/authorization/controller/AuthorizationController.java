@@ -26,6 +26,16 @@ import static com.ship.authorization.service.UsersService.ROLE_CREWMAN;
 
 @RestController
 public class AuthorizationController {
+
+    const String admiral = "ADMIRAL";
+    const String vice_admiral = "VICE_ADMIRAL";
+    const String captain = "CAPTAIN";
+    const String commander = "COMMANDER";
+    const String lieutenant ="LIEUTENANT";
+    const String ensign = "ENSIGN";
+    const String crewman = "CREWMAN";
+    const String[] ranks = {admiral, vice_admiral, captain, commander, lieutenant, ensign, crewman};
+
     @Autowired
     private UsersService usersService;
 
@@ -38,12 +48,36 @@ public class AuthorizationController {
         String recipientRole = usersService.loadUserRole(actionDto.getRecipient());
         System.out.println("Role: " + recipientRole);
 
+
         for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()){
+
+            if (RankDifference(grantedAuthority.getAuthority(), recipientRole) + 1 < 0) {
+                throw new ForbiddenAccessException();
+            }
             if (grantedAuthority.getAuthority().equals(ROLE_CREWMAN)) {
                 if (recipientRole.contains(ROLE_ADMIRAL)) {
                     throw new ForbiddenAccessException();
                 }
             }
         }
+    }
+
+
+    private int RankDifference(String rank1, String rank2)
+    {
+        int rank1Level = 0;
+        int rank2Level = 0;
+        for (int i = 0; i < ranks.length; ++i)
+        {
+            if (ranks[i] == rank1)
+            {
+                rank1Level = i;
+            }
+            if (ranks[i] == rank2)
+            {
+                rank2Level = i;
+            }
+        }
+        return rank1Level - rank2Level;
     }
 }
