@@ -1,0 +1,5 @@
+redis:
+    image: redis:4.0.8-alpine
+    hostname: redis
+    ports: 
+      - "6379:6379"
