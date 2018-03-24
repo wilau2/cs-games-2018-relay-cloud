@@ -1,6 +1,20 @@
 # BATTLESTAR_CONCORDIA_INFRA
 # Java micro-services
 
+- [x] (2pt) Create a dockerfile for each projects in settings.gradle
+        - They use a shared Dockerfile
+    (1pt) Create a gradle task to build all docker, the task could look like ./gradlew clean build buildDocker -x test
+    (0.5pt) Create a gradle task to build single docker images when you are working in only one module
+-[x] (2pt) Create a docker-compose version 3+ file to orchestrate de booting of all modules
+
+- [x] (1pt) Dockerfile and script used by them are not duplicated in each projects
+        - Same Dockerfile used for all components at root
+- [x] (0.5pt) Only Zuul port is available on the host machine
+        - Only Zuul port specified in docker-compose.yml, rest of services communicate over `csgames_net` bridge network.
+
+(1pt) Make sure your able to override parts of the docker-compose give an exemple with the stack pointing on an external redis with a public url.
+
+
 ## Build
 build all projects
 ```

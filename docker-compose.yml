@@ -1,19 +1,57 @@
 version: '3'
 
 services:
-  authorization:
-    build: .
-  communication:
-    build: .
-  config-server:
-    build: .
-  eureka-server:
-    build: .
-  zuul-server:
-    build: .
-    #not sure about this, you might need to remove it
-    ports:
-      - "8888:8888"
-    network_mode: 'host'
 
-#run with docker-compose up -d
+  authorization:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    networks:
+    - csgames_net
+
+  communication:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    networks:
+    - csgames_net
+
+  config-server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    networks:
+    - csgames_net
+
+  eureka-server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    networks:
+    - csgames_net
+
+  zuul-server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+    - 5000:5000
+    restart: always
+    networks:
+    - csgames_net
+
+  redis:
+    image: redis:4.0.8-alpine
+    restart: always
+    networks:
+    - csgames_net
+
+networks:
+  csgames_net:
+    driver: "bridge"
+
+
