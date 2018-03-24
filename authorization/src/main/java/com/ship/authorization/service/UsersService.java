@@ -16,6 +16,24 @@ public class UsersService {
     public static final String ROLE_ENSIGN = "ROLE_ENSIGN";
     public static final String ROLE_CREWMAN = "ROLE_CREWMAN";
 
+    public static final int GetRank(String role) {
+        if (role.equals(ROLE_ADMIRAL)) {
+            return 7;
+        } else if (role.equals(ROLE_VICE_ADMIRAL)) {
+            return 6;
+        } else if (role.equals(ROLE_CAPTAIN)) {
+            return 5;
+        } else if (role.equals(ROLE_COMMANDER)) {
+            return 4;
+        } else if (role.equals(ROLE_LIEUTENANT)) {
+            return 3;
+        } else if (role.equals(ROLE_ENSIGN)) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
+
     private Map<String, String> users = new HashMap<>();
 
     public UsersService() {

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import static com.ship.authorization.service.UsersService.GetRank;
 import static com.ship.authorization.service.UsersService.ROLE_ADMIRAL;
 import static com.ship.authorization.service.UsersService.ROLE_CREWMAN;
 
@@ -40,7 +41,7 @@ public class AuthorizationController {
 
         for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()){
             if (grantedAuthority.getAuthority().equals(ROLE_CREWMAN)) {
-                if (recipientRole.contains(ROLE_ADMIRAL)) {
+                if (GetRank(recipientRole) - 1 >= 2) {
                     throw new ForbiddenAccessException();
                 }
             }
