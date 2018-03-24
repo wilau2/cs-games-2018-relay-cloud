@@ -27,6 +27,8 @@ public class Message implements Serializable {
     @Column(nullable = false)
     private String sender;
 
+    private static String[] ranks = ["CREWMAN", "ENSIGN", "LIEUTENANT", "COMMANDER", "CAPTAIN", "VICE_ADMIRAL", "ADMIRAL"];
+
     @JsonCreator
     public Message(@JsonProperty("id") Long id,
                    @JsonProperty("title") String title,
@@ -34,6 +36,9 @@ public class Message implements Serializable {
                    @JsonProperty("recipient") String recipient,
                    @JsonProperty("sender") String sender
                    ) {
+        int senderRank = Message::ranks.indexOf(sender);
+        int recipientRank = Message::ranks.indexOf(recipient);
+        Assert.assertEquals(true, recipientRank <= senderRank + 1);
         this.id = id;
         this.title = title;
         this.content = content;
