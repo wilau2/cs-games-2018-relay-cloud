@@ -31,7 +31,7 @@ spring:
 
 eureka:
   client:
-    service-url.defaultZone: http://discUser:discPassword@localhost:8082/eureka
+    service-url.defaultZone: http://discUser:discPassword@localhost:8082/eureka/
 
 spring.redis.host: localhost
 
@@ -41,15 +41,15 @@ zuul:
     authorization:
       path: /authorization/**
       sensitive-headers: Set-Cookie,Authorization
-      url: http://localhost:8090
+      url: http://localhost:8090/
     communication:
       path: /communication/**
       sensitive-headers: Set-Cookie,Authorization
-      url: http://localhost:8100
+      url: http://localhost:8100/
     eureka-server:
       path: /eureka-server/**
       sensitive-headers: Set-Cookie,Authorization
-      url: http://localhost:8082
+      url: http://localhost:8082/
 
 ---
 spring:
@@ -57,7 +57,7 @@ spring:
 
 eureka:
   client:
-    service-url.defaultZone: http://discUser:discPassword@service-discovery:8082/eureka
+    service-url.defaultZone: http://discUser:discPassword@service-discovery:8082/eureka/
 
 spring.redis.host: redis
 
