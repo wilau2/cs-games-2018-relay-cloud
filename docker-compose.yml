@@ -1,21 +1,26 @@
 version: "3"
 services:
   authorization:
-    context: ./
-    dockerfile: Dockerfile_Auth
+    build:
+      context: ./
+      dockerfile: Dockerfile_Auth
 
   communication:
-    context: ./
-    dockerfile: Dockerfile_Comm
+    build:
+      context: ./
+      dockerfile: Dockerfile_Comm
 
   config-server:
-    context: ./
-    dockerfile: Dockerfile_Config_Server
+    build:
+      context: ./
+      dockerfile: Dockerfile_Config_Server
 
   eureka-server:
-    context: ./
-    dockerfile: Dockerfile_Eureka_Server
+    build:
+      context: ./
+      dockerfile: Dockerfile_Eureka_Server
 
   zuul-server:
-    context: ./
-    dockerfile: Dockerfile_Zuul_Server
+    build:
+      context: ./
+      dockerfile: Dockerfile_Zuul_Server
