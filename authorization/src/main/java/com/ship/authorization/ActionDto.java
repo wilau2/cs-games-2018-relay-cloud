@@ -2,6 +2,7 @@ package com.ship.authorization;
 
 public class ActionDto {
     private String recipient;
+    private boolean authorization;
 
     public ActionDto() {
     }
@@ -16,6 +17,10 @@ public class ActionDto {
 
     public void setRecipient(String recipient) {
         this.recipient = recipient;
+    }
+
+    public boolean getAuthorization() {
+        return authorization;
     }
 }
 
