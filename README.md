@@ -1,5 +1,7 @@
 # Java micro-services
 
+J'ai pas réussi à faire quoi que ce soit d'intéressant. Sorry bro.
+
 ## Build
 build all projects
 ```
