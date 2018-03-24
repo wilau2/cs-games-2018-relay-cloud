@@ -1,0 +1,10 @@
+FROM centos
+
+LABEL maintainer="Tsin City"
+
+RUN yum install java-1.8.0-openjdk -y
+COPY / /opt/
+
+EXPOSE 8080
+
+CMD [ "java", "-jar", "/opt/build/libs/authorization-0.0.1-SNAPSHOT.jar"]

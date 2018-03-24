@@ -1,0 +1,9 @@
+FROM centos
+
+LABEL maintainer="Tsin City"
+
+RUN yum install java-1.8.0-openjdk -y
+RUN mkdir /opt
+COPY / /opt/
+
+EXPOSE 8080
