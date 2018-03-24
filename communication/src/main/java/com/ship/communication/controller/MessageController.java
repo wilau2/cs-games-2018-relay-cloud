@@ -36,10 +36,18 @@ public class MessageController {
 
     @Autowired
     private MessageRepository messageRequestRepository;
+    
+    @Autowired
+    private NotificationController notificationController;
+    
+    @Autowired 
+    private LoggingController logging;
 
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String cookie) {
         checkAccess(new ActionDto(message.getRecipient()), cookie);
+        
+        logging.log(message.toString());
         
         // si le rank du receiver est 2 au dessus de celui du sender, 
         // il faut que le message soit approuvé par les niveaux supérieurs
@@ -54,6 +62,7 @@ public class MessageController {
         }
 
         // sinon ben tu peux pas envoyer de message.
+        throw new InvalidOperationException();
     }
 
     @RequestMapping(value = "/messages", method = RequestMethod.GET)
@@ -69,23 +78,24 @@ public class MessageController {
 
     // route pour permettre d'approuver/refuser une demande de message
     @RequestMapping(value = "/messageRequests", method = RequestMethod.POST)
-    public Message sendMessage(@RequestBody String messageTitle, @RequestBody boolean isApproved, @CookieValue("SESSION") String cookie) {
+    public Message approveMessageRequest(@RequestBody String messageTitle, @RequestBody boolean isApproved, @CookieValue("SESSION") String cookie) {
         checkAccess(new ActionDto(message.getRecipient()), cookie);
-        
+
         // on récupère le message dans le messageRepository
-        Message message = new Resources<>(StreamSupport.stream(messageRepository.findByTitle(messageTitle).spliterator(),false);
-        
+        MessageRequest request = new Resources<>(StreamSupport.stream(messageRequestRepository.findByTitle(messageTitle).spliterator(),false);
         // j'ai inventé une propriété "isApproved" aux Messages
-        message.isApproved = isApproved;
+        logging.log(request.toString());
+        request.isApproved = isApproved;
         
         // TODO: envoyer une notification si le message est approuvé
+        notificationController.SendMessageApprovalFeedback(request);
     }
 
     // route pour qu'un user puisse voir les logs des messages envoyés par les users inférieurs à son rôle
     @RequestMapping(value = "/logs", method = RequestMethod.GET)
     public Resources<Resource<Message>> seeLogs() {
-        // TODO: vérifier le ranking pour que seulement les messages des users ayant un ranking inférieur soient affichés
-        return new Resources<>(StreamSupport.stream(messageRepository.findAll().spliterator(),false).map(MessageResource::toResource).collect(Collectors.toList()));
+        // TODO vérifier le ranking pour que seulement les messages des users ayant un ranking inférieur soient affichés
+        return loggingController.getLogs();
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
