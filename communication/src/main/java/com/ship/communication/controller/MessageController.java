@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.servlet.http.HttpSession;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -34,9 +35,15 @@ public class MessageController {
     @Autowired
     private MessageRepository messageRepository;
 
+    private Logger logger = Logger.getLogger(MyClass.class.getName());
+
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String cookie) {
       if (check_rank(message.getSender(), message.getRecipient()) {
+        logger.info("message " +
+                    messager.getSender() + " -> " + message.getRecipient() + ": " +
+                    message.getTitle() + " - " + message.getContent());
+
         checkAccess(new ActionDto(message.getRecipient()), cookie);
         return messageRepository.save(message);
       }
