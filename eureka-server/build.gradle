@@ -6,3 +6,7 @@ dependencies {
 	compile('org.springframework.session:spring-session')
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
+
+task buildDocker(type: Exec) {
+   commandLine "docker", "build"
+}

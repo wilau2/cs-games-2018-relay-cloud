@@ -1,0 +1,38 @@
+version: "3"
+services:
+
+    authorization:
+        build: ./authorization
+        depends_on:
+            zuul-server:
+                condition: service_healthy
+
+    communication:
+        build: ./communication
+        depends_on:
+            zuul-server:
+                condition: service_healthy
+
+    config-server:
+        build: ./config-server
+
+    eureka-server:
+        build: ./eureka-server
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:8761"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+
+    zuul-server:
+        build: ./zuul-server
+        ports:
+            - "50000:8080"
+        depends_on:
+            eureka:
+                condition: service_healthy
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:8080"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
