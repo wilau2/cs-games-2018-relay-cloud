@@ -2,6 +2,10 @@ package com.ship.communication.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.util.Assert;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,8 +30,7 @@ public class Message implements Serializable {
 
     @Column(nullable = false)
     private String sender;
-
-    private static String[] ranks = ["CREWMAN", "ENSIGN", "LIEUTENANT", "COMMANDER", "CAPTAIN", "VICE_ADMIRAL", "ADMIRAL"];
+    private static List<String> ranks = Arrays.asList("CREWMAN", "ENSIGN", "LIEUTENANT", "COMMANDER", "CAPTAIN", "VICE_ADMIRAL", "ADMIRAL");
 
     @JsonCreator
     public Message(@JsonProperty("id") Long id,
@@ -36,9 +39,9 @@ public class Message implements Serializable {
                    @JsonProperty("recipient") String recipient,
                    @JsonProperty("sender") String sender
                    ) {
-        int senderRank = Message::ranks.indexOf(sender);
-        int recipientRank = Message::ranks.indexOf(recipient);
-        Assert.assertEquals(true, recipientRank <= senderRank + 1);
+        int senderRank = ranks.indexOf(sender);
+        int recipientRank = ranks.indexOf(recipient);
+        Assert.isTrue(recipientRank <= senderRank + 1, "Cannot send message");
         this.id = id;
         this.title = title;
         this.content = content;
