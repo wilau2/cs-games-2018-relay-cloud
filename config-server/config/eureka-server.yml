@@ -5,11 +5,18 @@ server:
   port: ${PORT:8082}
 
 eureka:
-  client:
-    registerWithEureka: false
-    fetchRegistry: false
-    region: default
-    registryFetchIntervalSeconds: 5
+     client:
+       fetchRegistry: false
+       region: default
+       registerWithEureka: false
+       registryFetchIntervalSeconds: 5
+   server:
+     port: 8082
+   spring:
+     application:
+       name: eureka-server
+     redis:
+       port: 6379
 
 spring.redis.port: 6379
 

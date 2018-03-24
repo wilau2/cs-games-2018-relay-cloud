@@ -18,7 +18,7 @@ security.user:
 ---
 spring:
   profiles: native
-  cloud.config.server.native.search-locations: file:///Users/raphaelgaudreault/Projet/csgames/relay_programming/services/cs-games-2018-relay-cloud
+  cloud.config.server.native.search-locations: file:/Users/raphaelgaudreault/Projet/csgames/relay_programming/services/cs-games-2018-relay-cloud
 
 eureka:
   client:
