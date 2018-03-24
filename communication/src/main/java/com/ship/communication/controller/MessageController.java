@@ -15,13 +15,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import java.util.logging.Logger;
 
-import javax.servlet.http.HttpSession;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @RestController
 public class MessageController {
+
+    private final static Logger LOGGER = Logger.getLogger(MessageController.class.getName());
 
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -35,6 +37,7 @@ public class MessageController {
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String cookie) {
         checkAccess(new ActionDto(message.getRecipient()), cookie);
+        LOGGER.info("Sending a message ");
         return messageRepository.save(message);
     }
 
