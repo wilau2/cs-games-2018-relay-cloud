@@ -43,3 +43,11 @@ subprojects {
         }
     }
 }
+
+task builddockers {
+    doLast {
+        exec {
+            executable "./build-dockers.sh"
+        }
+    }
+}

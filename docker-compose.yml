@@ -1,0 +1,34 @@
+version: "3"
+services:
+
+    eureka-server:
+        build: ./eureka-server
+        volumes:
+            - .:/home
+        command: /home/gradlew :eureka-server:bootRun -Dspring.profiles.active=native
+        ports:
+            - 8082:8082
+
+    authorization:
+        build: ./authorization
+        volumes:
+            - .:/home
+        command: /home/gradlew :authorization:bootRun -Dspring.profiles.active=native
+        ports:
+            - 9090:9090
+
+    config-server:
+        build: ./config-server
+        volumes:
+            - .:/home
+        command: /home/gradlew :config-server:bootRun -Dspring.profiles.active=native
+
+    zuul-server:
+        build: ./zuul-server
+        volumes:
+            - .:/home
+        command: /home/gradlew :zuul-server:bootRun -Dspring.profiles.active=native
+
+
+    redis:
+        image: redis:4.0.8-alpine
