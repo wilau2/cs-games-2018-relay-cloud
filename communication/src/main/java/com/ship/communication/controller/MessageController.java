@@ -16,7 +16,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import javax.servlet.http.HttpSession;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -32,10 +35,19 @@ public class MessageController {
     @Autowired
     private MessageRepository messageRepository;
 
+    private Logger logger = Logger.getLogger(MyClass.class.getName());
+
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     public Message sendMessage(@RequestBody Message message, @CookieValue("SESSION") String cookie) {
+      if (check_rank(message.getSender(), message.getRecipient()) {
+        logger.info("message " +
+                    messager.getSender() + " -> " + message.getRecipient() + ": " +
+                    message.getTitle() + " - " + message.getContent());
+
         checkAccess(new ActionDto(message.getRecipient()), cookie);
         return messageRepository.save(message);
+      }
+      return null;
     }
 
     @RequestMapping(value = "/messages", method = RequestMethod.GET)
@@ -61,6 +73,12 @@ public class MessageController {
 
         HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
         restTemplate.postForObject(url, entity, String.class);
+    }
+
+    private boolean check_rank(String send_rank, String recipient_rank) {
+        String[] ranks = {"CREWMAN", "ENSIGN", "LIEUTENANT", "COMMANDER", "CAPTAIN", "VICE_ADMIRAL", "ADMIRAL"};
+        int rank = ArrayUtils.indexOf(ranks, send_rank.toLowerCase());
+        return ArrayUtils.indexOf(ranks, send_rank) <= ArrayUtils.indexOf(ranks, recipient_rank.toLowerCase()) + 1;
     }
 
 }
