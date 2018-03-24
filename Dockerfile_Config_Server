@@ -1,0 +1,17 @@
+FROM openjdk:8 AS gradle-builder
+
+WORKDIR /app
+
+COPY . .
+
+WORKDIR config-server
+
+RUN ../gradlew build
+
+FROM openjdk:8-jre
+
+WORKDIR /root/
+
+COPY --from=gradle-builder /app/config-server/build/libs/config-server-0.0.1-SNAPSHOT.jar .
+
+CMD ["java","-jar","config-server-0.0.1-SNAPSHOT.jar"]
