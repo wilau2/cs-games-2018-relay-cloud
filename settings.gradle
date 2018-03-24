@@ -3,5 +3,4 @@ include 'authorization'
 include 'config-server'
 include 'eureka-server'
 include 'zuul-server'
-
 include 'communication'
