@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import static com.ship.authorization.service.UsersService.ROLE_ADMIRAL;
-import static com.ship.authorization.service.UsersService.ROLE_CREWMAN;
+import static com.ship.authorization.service.UsersService.*;
 
 @RestController
 public class AuthorizationController {
@@ -39,11 +38,61 @@ public class AuthorizationController {
         System.out.println("Role: " + recipientRole);
 
         for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()){
+            // "CREWMAN"
             if (grantedAuthority.getAuthority().equals(ROLE_CREWMAN)) {
-                if (recipientRole.contains(ROLE_ADMIRAL)) {
-                    throw new ForbiddenAccessException();
+                if (recipientRole.contains(ROLE_CREWMAN) || recipientRole.contains(ROLE_ENSIGN)) {
+                    return;
                 }
             }
+
+            // "ENSIGN"
+            if (grantedAuthority.getAuthority().equals(ROLE_ENSIGN)) {
+                if (recipientRole.contains(ROLE_CREWMAN) || recipientRole.contains(ROLE_ENSIGN) || recipientRole.contains(ROLE_LIEUTENANT)) {
+                    return;
+                }
+            }
+
+            // "LIEUTENANT"
+            if (grantedAuthority.getAuthority().equals(ROLE_LIEUTENANT)) {
+                if (recipientRole.contains(ROLE_CREWMAN)
+                        || recipientRole.contains(ROLE_ENSIGN)
+                        || recipientRole.contains(ROLE_LIEUTENANT)
+                        || recipientRole.contains(ROLE_COMMANDER)) {
+                    return;
+                }
+            }
+
+            // "COMMANDER"
+            if (grantedAuthority.getAuthority().equals(ROLE_COMMANDER)) {
+                if (recipientRole.contains(ROLE_CREWMAN)
+                        || recipientRole.contains(ROLE_ENSIGN)
+                        || recipientRole.contains(ROLE_LIEUTENANT)
+                        || recipientRole.contains(ROLE_COMMANDER)
+                        || recipientRole.contains(ROLE_CAPTAIN)) {
+                    return;
+                }
+            }
+
+            // "CAPTAIN"
+            if (grantedAuthority.getAuthority().equals(ROLE_CAPTAIN)) {
+                if (recipientRole.contains(ROLE_CREWMAN)
+                        || recipientRole.contains(ROLE_ENSIGN)
+                        || recipientRole.contains(ROLE_LIEUTENANT)
+                        || recipientRole.contains(ROLE_COMMANDER)
+                        || recipientRole.contains(ROLE_CAPTAIN)
+                        || recipientRole.contains(ROLE_VICE_ADMIRAL)) {
+                    return;
+                }
+            }
+
+            // "VICE_ADMIRAL"
+            // "ADMIRAL"
+            if (grantedAuthority.getAuthority().equals(ROLE_VICE_ADMIRAL)
+                    || grantedAuthority.getAuthority().equals(ROLE_ADMIRAL)) {
+                return;
+            }
         }
+
+        throw new ForbiddenAccessException();
     }
 }
